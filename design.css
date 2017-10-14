@@ -163,20 +163,15 @@ h2{
 }
 
 
-
-
-/*Map design*/
-.mapHolder{
-  width:100%;
+.mapView{
   height:100%;
+  width: 100%;
+  top:0;
+  left:0;
+
 }
 
-#mapGrid{
-  position:absolute;
-  top:0;
-  left:80px;
-  bottom:80px;
-}
+
 
 /*Home Page*/
 
