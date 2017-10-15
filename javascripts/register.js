@@ -3,6 +3,8 @@ var lng;
 
 $(function(){
   var loc = getUserLoc();
+  //hide signUpBox
+  $(".signUpBox").hide();
   // Initialize Firebase
   var config = {
   apiKey: "AIzaSyDZpM9AOjqDI2N8Nwbf0cRFNoew1nbCdrU",
@@ -44,8 +46,23 @@ function writeUserData(name, email,pass,phone, prof, gen,lat, lng) {
   });
 }
 
+//show signUpBox
+$("#signUpLoad").click(function(e) {
+  e.preventDefault();
+  $(".loginBox").fadeOut(1000);
+  $(".signUpBox").fadeIn(1000);
+});
 
-$(".signUpBox").submit(function(){
+
+//go to signIn page
+$("#signInLoad").click(function(e){
+  e.preventDefault();
+  $(".signUpBox").fadeOut(1000);
+  $(".loginBox").fadeIn(1000);
+});
+
+//submit from the signup btn
+$(".signUpBox").submit(function(event){
   event.preventDefault();
   var name=$("#name").val();
   var email=$("#email").val();
@@ -104,6 +121,13 @@ function initMap() {
     center: pos
   });
   //changed code here from previous checkpt.
+
+//marker
+  var markerInitial = new google.maps.Marker({
+    position: pos,
+    map: map
+  });
+
 
 
   var infoWindow = new google.maps.InfoWindow({

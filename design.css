@@ -29,8 +29,11 @@ a{
     text-decoration: none;
     color: #808080;
 }
+.MainContainer{
+  position:relative;
+}
 
-.js-loginBox{
+.loginBox{
     position:absolute;
     top:50%;
     left:50%;
@@ -79,7 +82,7 @@ h2{
 
 }
 
-#email,#pass,#phone,#phonepreffix,#name,#can_teach,#wanna_learn{
+#email,#emailLog,#passLog,#pass,#phone,#phonepreffix,#name,#can_teach,#wanna_learn{
     border: none;
     border-bottom: 1px solid #fff;
     background: transparent;
@@ -107,13 +110,14 @@ h2{
 
 
 .signUpBox{
-    margin-top: 56px;
+    display:none; /*so that initially signUpBox remains hidden*/
+    margin-top: 64px;
     position:absolute;
     top:40%;
     left:50%;
     width:352px;
     transform:translate(-50%,-50%);
-    height:720px;
+    height:624px;
     box-sizing: border-box;
     background: rgba(0,0,0,0.35);
     padding: 80px 40px;
@@ -169,19 +173,4 @@ h2{
   top:0;
   left:0;
 
-}
-
-
-
-/*Home Page*/
-
-/*left navigation Bar*/
-.leftNav{
-  left:0;
-  top:0;
-  width:25%;
-}
-
-#navMain{
-  background-color:#808080;
 }
