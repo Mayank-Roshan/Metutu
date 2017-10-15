@@ -67,7 +67,7 @@ $(".signUpBox").submit(function(){
     gen=document.getElementById("female").value;
   }
 
-  console.log(name,email,pass,phone,prof,gen);
+  console.log(name,email,pass,phone,prof,gen,lat,lng);
   writeUserData(name, email,pass,phone, prof, gen,lat, lng);
   //adding conformation
   alert("Data Saved");
@@ -80,6 +80,22 @@ $(".signUpBox").submit(function(){
 });
 
 
+var mapStyles = {
+        default: null,
+        hide: [
+          {
+            featureType: 'poi.business',
+            stylers: [{visibility: 'off'}]
+          },
+          {
+            featureType: 'transit',
+            elementType: 'labels.icon',
+            stylers: [{visibility: 'off'}]
+          }
+        ]
+      };
+
+
 //init map
 function initMap() {
   var pos = {lat: lat, lng: lng};
@@ -87,8 +103,62 @@ function initMap() {
     zoom: 15,
     center: pos
   });
-  var marker = new google.maps.Marker({
-    position: pos,
-    map: map
+  //changed code here from previous checkpt.
+
+
+  var infoWindow = new google.maps.InfoWindow({
+    content: 'Info here'
+  });
+  var nearbyCircle = new google.maps.Circle({
+            strokeColor: '#808080',
+            strokeOpacity: 0.60,
+            strokeWeight: 2,
+            fillColor: '#006600',
+            fillOpacity: 0.35,
+            map: map,
+            center: pos,
+            radius: 1000
+          });
+  google.maps.event.addDomListener(window, "resize", function() {
+    var center = map.getCenter();
+    google.maps.event.trigger(map, "resize");
+    map.setCenter(center);
+    map.setOptions({styles: styles['hide']});
+  });
+
+
+  var data=firebase.database();
+  var dataRef=firebase.database().ref("users/");
+  dataRef.on("child_added",function(){
+    var ref=dataRef.key;
+    const userElement=data.val();
+    var latData=userElement.latitude;
+    var lngData=userElement.longitude;
+    var _kCord = new google.maps.LatLng(latData, lngData);
+    var _pCord = new google.maps.LatLng(latData, lngData);
+    var dist = google.maps.geometry.spherical.computeDistanceBetween(_pCord, _kCord);
+    if (dist < 1000)
+      {
+        const name = userelement.username;
+        const phone = userelement.phone;
+        const prof = userelement.profession;
+        var marker = [name, latData, lngData];
+        var pos = new google.maps.LatLng(marker[1], marker[2]);
+        bounds.extend(pos);
+        map.fitBounds(bounds);
+        marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            animation: google.maps.Animation.DROP,
+            title: marker[0],
+            icon:'blue-map-marker-png-image-2958.png',
+            label: prof.charAt(0).toUpperCase()
+        });
+        marker.addListener('click', function() {
+          infoWindow.setContent('<div><strong>' + name + '</strong><br>' + prof + '<br>Phone: ' + phone + '</div>');
+          infoWindow.open(map, marker);
+        });
+      }
+
   });
 }
